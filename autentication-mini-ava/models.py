@@ -1,21 +1,21 @@
-from sqlalchemy import Column, Integer, String,create_engine
-from databases import Database
-import sqlalchemy
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Column, Integer, String
+from pydantic import BaseModel
+from config import Base
 
+class User(Base):
+    __tablename__ = "usuarios"
+    id_usuario = Column(Integer, primary_key=True, index=True)
+    cpf = Column(String, index=True)
+    id_aluno_professor = Column(Integer)
+    nome = Column(String)
+    senha = Column(String)
+    tipo = Column(String)
 
-DATABASE_URL = "mysql://root:root@localhost:3306/gerenciamento-matricula"
-database = Database(DATABASE_URL)
+class login(BaseModel):
+    usuario: str
+    senha: str
 
-metadata = sqlalchemy.MetaData()
-
-usuarios = sqlalchemy.Table(
-    "usuarios",
-    metadata,
-    Column("id_usuario", Integer, primary_key=True),
-    Column("cpf", String),
-    Column("id_aluno_professor", Integer),
-    Column("nome", String),
-    Column("senha", String),
-    Column("tipo", String),
-)
+class retorno(BaseModel):
+    idUsuario: int
+    tipoUsuario: str
+    nome: str   
